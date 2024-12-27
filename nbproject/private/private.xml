@@ -3,7 +3,32 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/web/index.html</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/web/home.jsp</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/src/java/servlets/registerController.java</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/src/java/models/Users/Seller.java</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/src/java/servlets/homeController.java</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/web/css/register.css</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/src/java/servlets/loginController.java</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/web/addProduct.jsp</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/web/css/addProduct.css</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/src/java/servlets/orderController.java</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/src/java/models/Users/User.java</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/src/java/utilities/JDBC.java</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/web/index.jsp</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/web/css/home_page.css</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/web/register.jsp</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/web/login.jsp</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/src/java/models/Products/Product.java</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/web/css/profile.css</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/web/profile.jsp</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/src/java/models/Users/UserDB.java</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/web/payment.jsp</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/web/css/home.css</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/src/java/models/Users/Buyer.java</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/web/css/login.css</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/web/css/index.css</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/src/java/servlets/profilController.java</file>
+            <file>file:/C:/Users/aktsa_wi2suow/Documents/NetBeansProjects/TubesPBO_kelompok4/src/java/models/Products/ProductDB.java</file>
         </group>
     </open-files>
 </project-private>

@@ -5,22 +5,20 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import models.Users.User;
 
 /**
  *
  * @author aktsa_wi2suow
  */
-@WebServlet(name = "login", urlPatterns = {"/login"})
-@MultipartConfig
-public class loginController extends HttpServlet {
+@WebServlet(name = "register", urlPatterns = {"/register"})
+public class registerController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,7 +31,7 @@ public class loginController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        request.getRequestDispatcher("register.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -62,21 +60,22 @@ public class loginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String email = request.getParameter("email");
         String username = request.getParameter("username");
+        String address = request.getParameter("address");
+        String phoneNumber = request.getParameter("phoneNumber");
         String password = request.getParameter("password");
+        User newUser = new User(username, password, email, phoneNumber, address);
+        boolean created = newUser.daftarAkun();
         
-        User loggedUser = new User(username, password);
-        boolean canLog = loggedUser.masukAkun();
-        if (canLog) {
-            HttpSession session = request.getSession();
-            session.setAttribute("username", username);
-            session.setAttribute("id", loggedUser.getUserId());
-            response.sendRedirect("home");
+        if (created) {
+            request.setAttribute("successRgesiter", "Your account successfully registered, login to start!");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
+        } else {
+            request.setAttribute("failedRgesiter", "User with the same detail exsited!");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
-        
-        request.setAttribute("errorMessage", "Invalid username or password.");
-        request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
     /**

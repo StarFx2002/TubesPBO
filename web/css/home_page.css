@@ -1,0 +1,100 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f8f8;
+    padding: 10px 20px;
+}
+.logo {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #333;
+}
+.search-bar input {
+    padding: 5px;
+    font-size: 1em;
+}
+.hero {
+    background: url('resources/images/hero.jpg') no-repeat center center/cover;
+    color: white;
+    text-align: center;
+    padding: 50px 20px;
+}
+.hero h1 {
+    font-size: 2.5em;
+    margin: 0;
+}
+.hero p {
+    font-size: 1.2em;
+}
+.new-arrivals {
+    padding: 20px;
+    background-color: #fdfdfd;
+}
+.new-arrivals h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+.product-item {
+    background-color: #e8ffe8;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+.product-item img {
+    max-width: 100%;
+    height: auto;
+}
+.newsletter {
+    text-align: center;
+    padding: 20px;
+    background-color: #fff8e1;
+}
+.newsletter input {
+    padding: 10px;
+    width: 300px;
+    max-width: 80%;
+    margin-right: 10px;
+}
+.newsletter button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+footer {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.footer-section {
+    margin: 10px;
+}
+.footer-section h4 {
+    margin-bottom: 10px;
+}
+.footer-section a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 5px;
+}
