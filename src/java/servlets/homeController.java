@@ -16,7 +16,6 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Scanner;
@@ -80,12 +79,30 @@ public class homeController extends HttpServlet {
             if (menu.equals("profile")) {
                 if (addR != null) {
                     int add = Integer.parseInt(addR);
+                    if (add == 0) {
+                        int id = Integer.parseInt(request.getParameter("id"));
+                        Product editProduct = new Product();
+                        editProduct.setIDProduk(id);
+                        editProduct.loadProduct(editProduct);
+                        
+                        request.setAttribute("id", id);
+                        request.setAttribute("name", editProduct.getName());
+                        request.setAttribute("price", editProduct.getHarga());
+                        request.setAttribute("quantity", editProduct.getKuantitas());
+                        request.setAttribute("description", editProduct.getDeskripsi());
+                        request.setAttribute("imageUrl", editProduct.getImageURL());
+                        request.getRequestDispatcher("editProduct.jsp").forward(request, response);
+                        return;
+                    }
                     if (add == 1) {
                         request.getRequestDispatcher("addProduct.jsp").forward(request, response);
                         return;
                     }
                 }
                 
+                int sellerId = (int) homeSession.getAttribute("id");
+                List<Product> soldProducts = new Product().getProductsBySeller(sellerId);
+                request.setAttribute("soldProducts", soldProducts);
                 request.getRequestDispatcher("profile.jsp").forward(request, response);
                 return;
             }
@@ -95,8 +112,6 @@ public class homeController extends HttpServlet {
         List<Product> products = prod.getAllProducts();
         request.setAttribute("products", products);
         request.getRequestDispatcher("home.jsp").forward(request, response);
-        
-        
     }
 
     /**
@@ -123,6 +138,69 @@ public class homeController extends HttpServlet {
             if (menu.equals("profile")) {
                 if (addR != null) {
                     int add = Integer.parseInt(addR);
+                    if (add == -1) {
+                        int id = Integer.parseInt(request.getParameter("id"));
+                        Product delProduct = new Product();
+                        delProduct.setIDProduk(id);
+                        delProduct.hapusProduk();
+                    }
+                    if (add == 0) {
+                        int id = (int) homeSession.getAttribute("id");
+                        Seller seller = new Seller();
+                        seller.setUserId(id);
+
+                        // Retrieve product details from the form
+                        int productId = Integer.parseInt(getPartValue(request.getPart("id")));
+                        String name = getPartValue(request.getPart("name"));
+                        Double price = Double.valueOf(getPartValue(request.getPart("price")));
+                        int quantity = Integer.parseInt(getPartValue(request.getPart("quantity")));
+                        String description = getPartValue(request.getPart("description"));
+                        Part photoPart = request.getPart("product-photo");
+
+                        // Check if a new photo is uploaded
+                        String fileName = photoPart.getSubmittedFileName();
+                        String imageUrl = null;
+                        if (fileName != null && !fileName.isEmpty()) {
+                            // Pre-process the uploaded file
+                            String fileExtension = getFileExtension(fileName);
+                            String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
+
+                            InputStream fileContent = photoPart.getInputStream();
+                            String contentType = photoPart.getContentType();
+                            if (!isImageContentType(contentType)) {
+                                request.setAttribute("error", "invalid_file_type");
+                                request.getRequestDispatcher("editProduct.jsp").forward(request, response);
+                                return;
+                            }
+
+                            // Save the file to the specified folder
+                            String uploadPath = getServletContext().getRealPath("") + File.separator + "assets" + File.separator + "uploads";
+                            File uploadDir = new File(uploadPath);
+                            if (!uploadDir.exists()) {
+                                uploadDir.mkdirs(); // Create the directory if it doesn't exist
+                            }
+
+                            File fileToSave = new File(uploadPath, uniqueFileName);
+                            Files.copy(fileContent, fileToSave.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+                            imageUrl = "assets/uploads/" + uniqueFileName;
+                        }
+
+                        // Create a Product object and update it
+                        Product product = new Product();
+                        product.setIDProduk(productId); // Set the product ID
+                        product.loadProduct(product);
+                        
+                        product.setName(name);
+                        product.setHarga(price);
+                        product.setKuantitas(quantity);
+                        product.setDeskripsi(description);
+                        if (imageUrl != null) {
+                            product.setImageURL(imageUrl); // Update image URL only if a new image is uploaded
+                        } 
+                        product.setPemilikProduk(seller);
+                        product.editProduk();
+                    }
                     if (add == 1) {
                         int id = (int) homeSession.getAttribute("id");
                         Seller seller = new Seller();
@@ -165,14 +243,11 @@ public class homeController extends HttpServlet {
                         product.setDeskripsi(description);
                         product.setImageURL("assets/uploads/" + uniqueFileName);
                         product.setPemilikProduk(seller);
-                        product.addProduct(product);
-                        
-                        request.getRequestDispatcher("profile.jsp").forward(request, response);
-                        return;
+                        product.tambahProduk();
                     }
                 }
                 
-                request.getRequestDispatcher("profile.jsp").forward(request, response);
+                response.sendRedirect("home?p=profile");
             }
         }
     }

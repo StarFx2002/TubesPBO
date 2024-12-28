@@ -24,6 +24,18 @@ public class Product extends ProductDB{
         this.kuantitas = kuantitas;
         this.pemilikProduk = pemilikProduk;
     }
+    
+    public void tambahProduk() {
+        addProduct(this);
+    }
+    
+    public void editProduk() {
+        editProduct(this);
+    }
+    
+    public void hapusProduk() {
+        deleteProduct(IDProduk);
+    }
 
     public int getIDProduk() {
         return IDProduk;
@@ -56,8 +68,6 @@ public class Product extends ProductDB{
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
     }
-    
-    
 
     public double getHarga() {
         return harga;

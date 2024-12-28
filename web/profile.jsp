@@ -1,3 +1,5 @@
+<%@page import="java.util.List"%>
+<%@page import="models.Products.Product"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% 
     String username = (String) session.getAttribute("username");
@@ -25,6 +27,7 @@
       <div class="search-bar">
         <input type="text" placeholder="Search">
       </div>
+      <a href="logout" class="btn btn-danger">LOGOUT</a>
     </div>
   </header>
 
@@ -52,11 +55,44 @@
           <p>Beri Penilaian</p>
         </div>
       </div>
-      <div class="my-store">
+    <div class="my-store">
         <button class="store-btn">Toko Saya</button>
-        <p>Toko mu masih sepi, unggah penjualan mu sekarang!</p>
+        <% 
+            List<Product> products = (List<Product>) request.getAttribute("soldProducts");
+            if (products != null && !products.isEmpty()) {
+        %>
+            <div class="product-list">
+                <% for (Product product : products) { %>
+                    <div class="product-card">
+                        <img src="<%= product.getImageURL() %>" alt="<%= product.getName() %>" class="product-image">
+                        <div class="product-details">
+                            <h3><%= product.getName() %></h3>
+                            <p><%= product.getDeskripsi() %></p>
+                            <p>Harga: Rp <%= product.getHarga() %></p>
+                            <p>Stok: <%= product.getKuantitas() %></p>
+                            <div class="product-actions">
+                                <form action="home" method="get" style="display: inline;">
+                                    <input type="hidden" name="p" value="profile">
+                                    <input type="hidden" name="a" value="0">
+                                    <input type="hidden" name="id" value="<%= product.getIDProduk() %>">
+                                    <button type="submit" class="btn btn-edit">Edit</button>
+                                </form>
+                                <form action="home?p=profile&a=-1" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                                    <input type="hidden" name="id" value="<%= product.getIDProduk() %>">
+                                    <button type="submit" class="btn btn-delete">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        <% 
+            } else { 
+        %>
+            <p>Toko mu masih sepi, unggah penjualan mu sekarang!</p>
+        <% } %>
         <a href="home?p=profile&a=1" class="btn btn-primary">Add Barang</a>
-      </div>
+    </div>
     </section>
   </main>
 </body>
