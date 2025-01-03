@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transaksi - MyReuseHub</title>
+  <link rel="stylesheet" href="transaksi.css">
+</head>
+<body>
+  <header>
+    <div class="logo">MyReuseHub</div>
+    <nav>
+      <a href="homePage.html">MyHome</a>
+      <a href="transaksi.html" class="active">MyTransaction</a>
+      <a href="profile.html">MyProfile</a>
+    </nav>
+    <div class="search-container">
+      <input type="text" placeholder="search">
+    </div>
+  </header>
+
+  <main>
+    <div class="transaksi-container">
+      <div class="transaksi-card">
+        <div class="image-placeholder">
+          <img src="KipasDE.jpg" alt="Kipas Angin New Zealand">
+        </div>
+        <div class="transaksi-info">
+          <h3>ADVANCE kipas angin doraemon (USED)</h3>
+          <p>ID Pembayaran: <span class="payment-id">ABCDS1234GFHD</span></p>
+          <p>Harga: <span class="price">Rp 50.000,00</span></p>
+          <p>Rating: 
+            <span class="rating" id="ratingDisplay">No rating yet</span> 
+            <a href="#" id="ratingLink">Give the product a rating!</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Rating Popup -->
+  <div class="popup-overlay" id="popupRating">
+    <div class="popup-container">
+      <button class="close-popup" id="closePopup">&times;</button>
+      <h2>Give the product a rating!</h2>
+      <div class="rating-stars" id="ratingStars">
+        <span class="star" data-value="1">⭐</span>
+        <span class="star" data-value="2">⭐</span>
+        <span class="star" data-value="3">⭐</span>
+        <span class="star" data-value="4">⭐</span>
+        <span class="star" data-value="5">⭐</span>
+      </div>
+      <button class="popup-button" id="submitRating">Submit</button>
+    </div>
+  </div>
+
+  <script>
+    const ratingLink = document.getElementById('ratingLink');
+    const popupRating = document.getElementById('popupRating');
+    const closePopup = document.getElementById('closePopup');
+    const submitRating = document.getElementById('submitRating');
+    const ratingStars = document.getElementById('ratingStars');
+    const ratingDisplay = document.getElementById('ratingDisplay');
+    let selectedRating = 0;
+
+    // Show the rating popup
+    ratingLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        popupRating.style.display = 'flex';
+    });
+
+    // Close the popup
+    closePopup.addEventListener('click', function () {
+        popupRating.style.display = 'none';
+    });
+
+    // Handle star selection
+    ratingStars.addEventListener('click', function (e) {
+        if (e.target.classList.contains('star')) {
+            selectedRating = e.target.dataset.value;
+            const stars = ratingStars.querySelectorAll('.star');
+            stars.forEach(star => {
+                star.style.color = star.dataset.value <= selectedRating ? 'gold' : 'gray';
+            });
+        }
+    });
+
+    // Submit the selected rating
+    submitRating.addEventListener('click', function () {
+        if (selectedRating > 0) {
+            const stars = '⭐'.repeat(selectedRating) + ' '.repeat(5 - selectedRating);
+            ratingDisplay.textContent = stars;
+
+            // Save to LocalStorage
+            localStorage.setItem('productRating', selectedRating);
+
+            // Close the popup
+            popupRating.style.display = 'none';
+        }
+    });
+
+    // Submit the selected rating
+    submitRating.addEventListener('click', function () {
+      if (selectedRating > 0) {
+        const stars = '⭐'.repeat(selectedRating) + ' '.repeat(5 - selectedRating);
+        ratingDisplay.textContent = stars;  // Save the selected rating to display
+        popupRating.style.display = 'none'; // Close the popup
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product - MyReuseHub</title>
+    <link rel="stylesheet" href="add_product.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>MyReuseHub</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="homepage.html">MyHome</a></li>
+                    <li><a href="mypayment.html">MyPayment</a></li>
+                    <li><a href="profile.html" class="active">MyProfile</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <h1>Add Product</h1>
+            <form class="add-product-form" action="homepage.html" method="post">
+                <div class="photo-upload">
+                    <div class="photo-placeholder">
+                        <span>+</span>
+                    </div>
+                    <button type="button">Insert Photo</button>
+                </div>
+                <div class="form-fields">
+                    <label for="product-name">Nama Product</label>
+                    <input type="text" id="product-name" name="product-name" placeholder="Type your product's name here..." required>
+                    
+                    <label for="product-price">Harga Product</label>
+                    <input type="text" id="product-price" name="product-price" placeholder="Type your product's price here..." required>
+                    
+                    <label for="product-details">Detail Product</label>
+                    <textarea id="product-details" name="product-details" placeholder="Type your product's details here..." required></textarea>
+                </div>
+                <button type="submit" class="upload-btn">Upload</button>
+            </form>
+        </main>
+    </div>
+</body>
+</html>

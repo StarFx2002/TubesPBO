@@ -1,0 +1,72 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+.split-container {
+    display: flex;
+    height: 100vh;
+}
+.left-section {
+    background: linear-gradient(to right, #fff9e6, #fff1c1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+    width : 50%;
+}
+.right-section {
+    flex: 1;
+    background: url('https://plus.unsplash.com/premium_photo-1683121271931-669e09a55414?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cGVvcGxlJTIwc2hvcHBpbmd8ZW58MHx8MHx8fDA%3D') no-repeat center center/cover;
+}
+.left-section h1 {
+    font-weight: bold;
+}
+.left-section p {
+    margin-top: -10px;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.right-section {
+    width: 50%;
+}
+
+.form-control {
+    border-radius: 0.5rem;
+}
+.btn-login {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 10px;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+}
+.btn-login:hover {
+    background-color: #45a049;
+}
+.forgot-password,
+.sign-up {
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+.sign-up {
+    color: #007BFF;
+}
+.sign-up:hover {
+    text-decoration: underline;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+

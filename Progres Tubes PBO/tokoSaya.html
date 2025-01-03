@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Saya - MyReuseHub</title>
+    <link rel="stylesheet" href="tokoSaya.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>MyReuseHub</h1>
+        </div>
+        <ul class="nav-links">
+            <a href="homePage.html">MyHome</a>
+            <a href="transaksi.html">MyTransaction</a>
+            <a href="profile.html" class="active">MyProfile</a>
+        </ul>
+        <div class="search-bar">
+            <input type="text" placeholder="Search">
+        </div>
+    </header>
+
+    <main>
+        <h1>Toko Saya</h1>
+        <div id="product-list" class="product-list">
+            <!-- Produk akan dimasukkan secara dinamis -->
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-info">
+            <p>&copy; 2024 MyReuseHub. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const productList = document.getElementById('product-list');
+        const products = JSON.parse(localStorage.getItem('products')) || [];
+
+        if (products.length === 0) {
+            productList.innerHTML = '<p>No products added yet!</p>';
+        } else {
+            products.forEach((product, index) => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}">
+                    <h2>${product.name}</h2>
+                    <p>${product.details}</p>
+                    <span>Price: ${product.price}</span>
+                    <div class="dropdown-menu">
+                        <button class="dropdown-toggle">Options</button>
+                        <div class="dropdown-content">
+                            <button class="edit-btn" data-index="${index}">Edit Produk</button>
+                            <button class="delete-btn" data-index="${index}">Delete Produk</button>
+                        </div>
+                    </div>
+                `;
+                productList.appendChild(productCard);
+            });
+
+            document.querySelectorAll('.edit-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const index = e.target.dataset.index;
+                    // Redirect to editProduct.html with the index as a query parameter
+                    window.location.href = `editProduct.html?index=${index}`;
+                });
+            });
+
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const index = e.target.dataset.index;
+                    const confirmDelete = confirm('Apakah Anda yakin ingin menghapus produk ini?');
+                    if (confirmDelete) {
+                        products.splice(index, 1);
+                        localStorage.setItem('products', JSON.stringify(products));
+                        location.reload();
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>

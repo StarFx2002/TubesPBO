@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product - MyReuseHub</title>
+    <link rel="stylesheet" href="editProduct.css">
+</head>
+<body>
+    <header>
+        <div class="logo">MyReuseHub</div>
+        <ul class="nav-links">
+            <a href="homePage.html">MyHome</a>
+            <a href="transaksi.html">MyTransaction</a>
+            <a href="profile.html" class="active">MyProfile</a>
+        </ul>
+        <div class="search-bar">
+            <input type="text" placeholder="Search">
+        </div>
+    </header>
+
+    <main>
+        <div class="edit-product-container">
+            <a href="tokoSaya.html" class="back-button">&larr; Back</a>
+            <h1>Edit Product</h1>
+            <div class="edit-layout">
+                <!-- Bagian gambar produk -->
+                <div class="image-section">
+                    <img id="product-image" src="" alt="Product Image">
+                    <input type="file" id="photo-input" accept="image/*" style="display: none;">
+                    <button class="insert-photo" onclick="document.getElementById('photo-input').click()">Insert Photo</button>
+                </div>
+
+                <!-- Bagian formulir -->
+                <div class="form-section">
+                    <label for="product-name">Nama Product</label>
+                    <input type="text" id="product-name">
+
+                    <label for="product-price">Harga Product</label>
+                    <input type="text" id="product-price">
+
+                    <label for="product-details">Detail Product</label>
+                    <textarea id="product-details"></textarea>
+
+                    <button class="save">Save</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const index = urlParams.get('index');
+        const products = JSON.parse(localStorage.getItem('products')) || [];
+
+        if (index !== null && products[index]) {
+            const product = products[index];
+
+            // Mengisi data produk ke input dan gambar
+            document.getElementById('product-name').value = product.name;
+            document.getElementById('product-price').value = product.price;
+            document.getElementById('product-details').value = product.details;
+
+            // Menampilkan gambar produk
+            const productImage = document.getElementById('product-image');
+            productImage.src = product.image || 'placeholder.png'; // Gunakan placeholder jika gambar kosong
+            productImage.alt = product.name || 'Product Image';
+        }
+
+        const photoInput = document.getElementById('photo-input');
+        const productImage = document.getElementById('product-image');
+        let updatedImage = null;
+
+        // Event listener untuk mengunggah foto
+        photoInput.addEventListener('change', () => {
+            const file = photoInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    updatedImage = e.target.result; // Menyimpan data URL gambar yang diunggah
+                    productImage.src = updatedImage; // Menampilkan gambar di halaman
+                };
+                reader.readAsDataURL(file); // Membaca file sebagai data URL
+            }
+        });
+
+        document.querySelector('.save').addEventListener('click', () => {
+            const updatedProduct = {
+                image: updatedImage || products[index].image, // Perbarui gambar jika ada, atau gunakan gambar lama
+                name: document.getElementById('product-name').value,
+                price: document.getElementById('product-price').value,
+                details: document.getElementById('product-details').value
+            };
+
+            products[index] = updatedProduct;
+            localStorage.setItem('products', JSON.stringify(products));
+            alert('Product updated successfully!');
+            window.location.href = 'tokoSaya.html';
+        });
+    </script>
+</body>
+</html>

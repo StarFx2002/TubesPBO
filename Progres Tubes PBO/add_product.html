@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product - MyReuseHub</title>
+    <link rel="stylesheet" href="add_product.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>MyReuseHub</h1>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#" class="active">MyHome</a></li>
+                    <li><a href="transaksi.html">MyTransaction</a></li>
+                    <li><a href="profile.html">MyProfile</a></li>
+                </ul>
+            </nav>
+            <div class="search-bar">
+                <input type="text" placeholder="Search...">
+            </div>
+        </header>
+        <main>
+            <h1>Add Product</h1>
+            <form class="add-product-form" action="homepage.html" method="post">
+                <div class="photo-upload">
+                    <div class="photo-placeholder" id="photo-preview">
+                        <span>+</span>
+                    </div>
+                    <input type="file" id="photo-input" accept="image/*" style="display: none;">
+                    <button type="button" onclick="document.getElementById('photo-input').click()">Insert Photo</button>
+                </div>                             
+                <div class="form-fields">
+                    <label for="product-name">Nama Product</label>
+                    <input type="text" id="product-name" name="product-name" placeholder="Type your product's name here..." required>
+                    
+                    <label for="product-price">Harga Product</label>
+                    <input type="text" id="product-price" name="product-price" placeholder="Type your product's price here..." required>
+                    
+                    <label for="product-details">Detail Product</label>
+                    <textarea id="product-details" name="product-details" placeholder="Type your product's details here..." required></textarea>
+                </div>
+                <button type="submit" class="upload-btn">Upload</button>
+            </form>
+        </main>
+    </div>
+    <script>
+        const photoInput = document.getElementById('photo-input');
+        const photoPreview = document.getElementById('photo-preview');
+    
+        photoInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Kosongkan konten sebelumnya di dalam placeholder
+                    photoPreview.innerHTML = '';
+                    // Buat elemen img baru untuk menampilkan gambar
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    photoPreview.appendChild(img);
+                }
+                reader.readAsDataURL(file); // Membaca file gambar sebagai Data URL
+            }
+        });
+    </script>
+    
+    <script>
+        document.querySelector('.add-product-form').addEventListener('submit', function (event) {
+    event.preventDefault(); // Mencegah pengiriman form default
+
+    // Ambil data dari form
+    const productName = document.getElementById('product-name').value;
+    const productPrice = document.getElementById('product-price').value;
+    const productDetails = document.getElementById('product-details').value;
+    const photoInput = document.getElementById('photo-input').files[0];
+
+    if (photoInput) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const productImage = e.target.result;
+
+            // Buat data produk baru
+            const newProduct = {
+                name: productName,
+                price: productPrice,
+                details: productDetails,
+                image: productImage,
+            };
+
+            // Ambil data produk yang sudah ada di LocalStorage
+            const existingProducts = JSON.parse(localStorage.getItem('products')) || [];
+            existingProducts.push(newProduct); // Tambahkan produk baru
+            localStorage.setItem('products', JSON.stringify(existingProducts)); // Simpan ke LocalStorage
+
+            // Redirect ke halaman Toko Saya
+            window.location.href = 'tokoSaya.html';
+        };
+        reader.readAsDataURL(photoInput); // Membaca file gambar sebagai Data URL
+    } else {
+        alert('Please upload a product photo.');
+    }
+});
+    </script>           
+</body>
+</html>

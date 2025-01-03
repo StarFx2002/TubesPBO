@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyReuseHub</title>
+  <link rel="stylesheet" href="product_info.css">
+  <style>
+    /* Hidden overlay initially */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5); /* Dimmed background */
+      display: none; /* Initially hidden */
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    /* Popup container */
+    .popup-container {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Close button */
+    .close-popup {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #333;
+    }
+
+    /* Popup content styles */
+    .popup-code {
+      font-size: 1.2rem;
+      margin: 20px 0;
+    }
+
+    .popup-button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .popup-button:hover {
+      background: #0056b3;
+    }
+
+    .payment-success-image {
+      max-width: 200px;
+      margin: 20px auto;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">MyReuseHub</div>
+    <nav>
+      <a href="homePage.html">MyHome</a>
+      <a href="transaksi.html">MyTransaction</a>
+      <a href="profile.html">MyProfile</a>
+    </nav>
+    <div class="search-container">
+      <input type="text" placeholder="Search">
+    </div>
+  </header>
+
+  <main>
+    <div class="back-container">
+      <button class="back-button" onclick="location.href='homePage.html'">&#8592;</button>
+      <h2>ADVANCE kipas angin doraemon (USED)</h2>
+    </div>
+
+    <!-- Popup Overlay -->
+    <div class="popup-overlay" id="popup">
+      <div class="popup-container" id="popup-content">
+        <button class="close-popup" id="closePopup">&times;</button>
+        <h2 id="popup-heading">Your Payment Code</h2>
+        <p class="popup-code" id="popup-code">ABCDS1234GFHD</p>
+        <button class="popup-button" id="paidButton">I Have Paid</button>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="image-placeholder">
+        <img src="kipasDE.jpg" alt="ADVANCE kipas angin doraemon">
+      </div>
+      <div class="product-info">
+        <p class="price">Rp 50.000,00</p>
+        <div class="order-details">
+          <p><strong>Detail Pesanan:</strong></p>
+          <label for="quantity">Jumlah</label>
+          <input type="number" id="quantity" name="quantity" placeholder="Masukkan jumlah">
+
+          <p>Metode Pembayaran</p>
+          <div class="payment-methods">
+            <button class="payment-button">Virtual Account</button>
+            <button class="payment-button">Transfer</button>
+            <button class="payment-button">E-Money</button>
+          </div>
+        </div>
+        <button class="continue-button" onclick="navigateToPayment()">Continue</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function navigateToPayment() {
+      const popup = document.getElementById('popup');
+      const openPopup = document.getElementById('openPopup');
+      const closePopup = document.getElementById('closePopup');
+      const paidButton = document.getElementById('paidButton');
+      const popupHeading = document.getElementById('popup-heading');
+      const popupCode = document.getElementById('popup-code');
+      
+      popup.style.display = 'flex';
+
+      // When the "I Have Paid" button is clicked, update the popup content
+      paidButton.addEventListener('click', () => {
+        popupHeading.textContent = 'Your Payment is Completed!';
+        popupCode.innerHTML = ''; // Remove the payment code
+        const successImage = document.createElement('img');
+        successImage.src = 'sukses.png'; // Use the uploaded image (sukses.png)
+        successImage.alt = 'Payment Success';
+        successImage.classList.add('payment-success-image');
+        document.querySelector('#popup-content').appendChild(successImage);
+        paidButton.style.display = 'none'; // Hide the "I Have Paid" button
+      });
+
+      // Close the popup when the close button is clicked
+      closePopup.addEventListener('click', () => {
+        popup.style.display = 'none';
+      });
+    }
+  </script>
+</body>
+</html>
