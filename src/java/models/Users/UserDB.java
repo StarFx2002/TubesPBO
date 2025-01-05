@@ -22,12 +22,12 @@ public class UserDB {
     }
 
     public boolean addUser(User user) {
-        if (isUserExists(user.getUsername(), user.getEmail()) < 0) {
+        if (isUserExists(user.getUsername(), user.getEmail()) > -1) {
             return false;
         }
         
         JDBC jdbc = new JDBC("myreusehub");
-        String query = "INSERT INTO users (email, name, password, phone_number, alamat) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO users (email, name, password, phone_number, address) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = jdbc.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, user.getEmail());
             stmt.setString(2, user.getUsername());
@@ -77,25 +77,4 @@ public class UserDB {
         return false;
     }
     
-    public void loadUser(User user) {
-        String query = "SELECT * FROM users WHERE id = ?";
-        JDBC jdbc = new JDBC("myreusehub");
-        try (Connection conn = jdbc.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, user.getUserId());
-            try (ResultSet rs = stmt.executeQuery()) {
-            if (rs.next()) {
-                // Load data from the database into the User object
-                user.setUsername(rs.getString("name"));
-                user.setPassword(rs.getString("password"));
-                user.setEmail(rs.getString("email"));
-                user.setPhoneNumber(rs.getString("phone_number"));
-                user.setAddress(rs.getString("address"));
-            } else {
-                System.out.println("No user found!");
-            }
-        }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

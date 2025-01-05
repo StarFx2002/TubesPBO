@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="login.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .image-section {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: auto;
+            overflow: hidden;
+        }
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .slides img {
+            width: 100%;
+            height: auto;
+        }
+        .navigation {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .navigation i {
+            cursor: pointer;
+            font-size: 2rem;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-section">
+            <form action="login.html">
+                <h1><b>Hello Shoppers</b></h1>
+                <h3><b>Welcome to MyReuseHub</b></h3>
+                <div class="textbox">
+                    <input type="text" name="username" placeholder="Email or Username" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="textbox">
+                    <input type="password" name="password" placeholder="Password" required>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+                <div class="forgot-link">
+                    <a href="#">Forgot Password?</a>
+                </div>
+                <input type="submit" class="btn" value="Login">
+                <a href="register.html">Dont have an account?</a>
+            </form>
+        </div>
+        <div class="image-section">
+            <div class="slides">
+                <img src="1.png" alt="Second Hand Items 1">
+                <img src="2.png" alt="Second Hand Items 2">
+                <img src="3.png" alt="Second Hand Items 3">
+            </div>
+            <div class="navigation">
+                <i class='bx bx-chevron-left' onclick="prevSlide()"></i>
+                <i class='bx bx-chevron-right' onclick="nextSlide()"></i>
+            </div>
+        </div>
+    </div>
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelector('.slides');
+        const totalSlides = slides.children.length;
+
+        function showSlide(index) {
+            if (index >= totalSlides) {
+                currentSlide = 0;
+            } else if (index < 0) {
+                currentSlide = totalSlides - 1;
+            } else {
+                currentSlide = index;
+            }
+            slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        setInterval(nextSlide, 2000); // Change slide every 2 seconds
+    </script>
+</body>
+</html>

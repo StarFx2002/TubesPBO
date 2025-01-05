@@ -1,138 +1,266 @@
+html {
+    min-height: 100%;
+}
+
 body {
     margin: 0;
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(to bottom, #f0f8e2, #f0f8e2);
-    color: #333;
+    /*background: linear-gradient(#f9f9f9, #ffe99e);*/
+    background: linear-gradient(to bottom, #f9fff7, #e8f5e9); /* Hijau pucat */
+    height: 100%;
 }
 
-header {
-    background-color: #57b680;
-    color: white;
+.profile-container {
+    flex: 1;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-}
-
-.logo h1 {
-    margin: 0;
-    font-size: 24px;
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: white;
-}
-
-.nav-links a.active {
-    font-weight: bold;
-}
-
-.profile-section {
-    text-align: center;
+    flex-direction: column;
+    align-items: flex-start;
     padding: 20px;
+    min-height: calc(100vh - 231px);
 }
 
-.profile-avatar {
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.profile-img {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    margin-bottom: 10px;
+    object-fit: cover;
 }
 
-.profile-name {
-    font-size: 24px;
-    margin: 0;
-}
-
-.profile-actions {
+.profile-info {
     display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    padding: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 20%;
 }
 
-.action-card img {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 10px;
-}
-
-.action-card p {
+.profile-info h2 {
     margin: 0;
+    color: #4CAF50;
+    font-size: 36px;
 }
 
-.my-store {
-    margin-top: 20px;
+.stats {
+    margin-top: 10px;
+    color: #555;
 }
 
-.store-btn, .add-btn {
+.stats span {
+    margin-right: 15px;
+}
+
+.profile {
+    text-align: center;
+    width: 100%;
+}
+
+.store-title {
+    display: inline-block;
+    margin: 10px 0;
+    color: #4CAF50;
+    font-size: 48px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.store-link:hover {
+    text-decoration: underline;
+}
+
+.logout button{
+    position: relative;
     padding: 10px 20px;
-    background-color: #2e8b57;
+    background-color: #db3a21;
     color: white;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: ease-in-out 0.1s;
+    bottom: 0
 }
 
-.product-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+.logout button:hover {
+    background-color: #731b0d;
 }
 
-.product-card {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
-    width: 200px;
-    text-align: center;
-}
-
-.product-image {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 10px;
-}
-
-.product-details h3 {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-}
-
-.product-actions {
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-around;
-}
-
-.btn-edit {
+.tambah-produk-link button {
+    padding: 10px 20px;
     background-color: #4CAF50;
     color: white;
     border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
+    border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
+    transition: ease-in-out 0.1s;
+}
+
+.tambah-produk-link button:hover {
+    background-color: #367a39;
+}
+
+.tambah-produk-link {
+    margin-left: auto;
+    min-width: 170px;
+}
+
+.empty-store {
+    margin-top: 100px;
+    font-size: 20px;
 }
 
 .btn-delete {
-    background-color: #f44336;
+    padding: 10px 20px;
+    background-color: #db3a21;
     color: white;
     border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
+    border-radius: 5px;
     cursor: pointer;
-}
-
-.btn-edit:hover {
-    background-color: #45a049;
+    font-size: 16px;
+    transition: ease-in-out 0.1s;
 }
 
 .btn-delete:hover {
-    background-color: #e41e1e;
+    background-color: #731b0d;
+}
+
+.btn-edit {
+    padding: 10px 20px;
+    background-color: #f0ce46;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: ease-in-out 0.1s;
+}
+
+.btn-edit:hover {
+    background-color: #b09a41;
+}
+
+footer {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    width: 100%;
+}
+
+.products {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping */
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+.product-item {
+    flex-basis: 100px;
+    flex-grow: 1;
+    flex-shrink: 0;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f1f8e9; /* Hijau pucat */
+    border: 2px solid #4CAF50; /* Border hijau terang */
+    border-radius: 8px;
+    padding: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-width: 300px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.product-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.product-item h3 {
+    font-size: 1.2rem;
+    color: #388E3C; /* Hijau lebih gelap */
+    margin: 10px 0;
+}
+
+.product-item p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.dropdown-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+}
+
+.dropdown-content button {
+    background-color: white;
+    color: #333;
+    padding: 10px 15px;
+    text-align: left;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+.dropdown-content button:last-child {
+    border-bottom: none;
+}
+
+.dropdown-content button:hover {
+    background-color: #f1f1f1;
+}
+
+.product-card:hover .dropdown-content {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .product-card {
+        flex: 1 1 calc(50% - 20px);
+        max-width: calc(50% - 20px);
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-info {
+        align-items: center;
+    }
 }

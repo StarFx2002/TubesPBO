@@ -1,100 +1,133 @@
-<%@page import="java.util.List"%>
 <%@page import="models.Products.Product"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.List"%>
+<!DOCTYPE html>
 <% 
     String username = (String) session.getAttribute("username");
 %>
-<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MyReuseHub Profile</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" href="css/profile.css">
-</head>
-<body>
-  <header>
-    <div class="header-container">
-      <h1 class="logo">MyReuseHub</h1>
-      <nav>
-        <ul class="nav-links">
-          <li><a href="home">MyHome</a></li>
-          <li><a href="home?p=payment">MyPayment</a></li>
-          <li><a href="" class="active">MyProfile</a></li>
-        </ul>
-      </nav>
-      <div class="search-bar">
-        <input type="text" placeholder="Search">
-      </div>
-      <a href="logout" class="btn btn-danger">LOGOUT</a>
-    </div>
-  </header>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MyReuseHub Profile</title>
+        <link rel="stylesheet" href="css/profile.css">
+    </head>
+    <body>
+    <%@ include file="components/header.jsp" %>
 
-  <main>
-    <section class="profile-section">
-      <div class="profile-header">
-        <img src="avatar-placeholder.png" alt="Profile Avatar" class="profile-avatar">
-        <h2 class="profile-name"><%= username %></h2>
-      </div>
-      <div class="profile-actions">
-        <div class="action-card">
-          <img src="Dompet.png" alt="Belum Bayar">
-          <p>Belum Bayar</p>
-        </div>
-        <div class="action-card">
-          <img src="Dikemas.png" alt="Dikemas">
-          <p>Dikemas</p>
-        </div>
-        <div class="action-card">
-          <img src="dikirim.png" alt="Dikirim">
-          <p>Dikirim</p>
-        </div>
-        <div class="action-card">
-          <img src="rate.png" alt="Beri Penilaian">
-          <p>Beri Penilaian</p>
-        </div>
-      </div>
-    <div class="my-store">
-        <button class="store-btn">Toko Saya</button>
-        <% 
-            List<Product> products = (List<Product>) request.getAttribute("soldProducts");
-            if (products != null && !products.isEmpty()) {
-        %>
-            <div class="product-list">
-                <% for (Product product : products) { %>
-                    <div class="product-card">
-                        <img src="<%= product.getImageURL() %>" alt="<%= product.getName() %>" class="product-image">
-                        <div class="product-details">
-                            <h3><%= product.getName() %></h3>
-                            <p><%= product.getDeskripsi() %></p>
-                            <p>Harga: Rp <%= product.getHarga() %></p>
-                            <p>Stok: <%= product.getKuantitas() %></p>
-                            <div class="product-actions">
-                                <form action="home" method="get" style="display: inline;">
-                                    <input type="hidden" name="p" value="profile">
-                                    <input type="hidden" name="a" value="0">
-                                    <input type="hidden" name="id" value="<%= product.getIDProduk() %>">
-                                    <button type="submit" class="btn btn-edit">Edit</button>
-                                </form>
-                                <form action="home?p=profile&a=-1" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this product?');">
-                                    <input type="hidden" name="id" value="<%= product.getIDProduk() %>">
-                                    <button type="submit" class="btn btn-delete">Delete</button>
-                                </form>
-                            </div>
-                        </div>
+        <main class="profile-container">
+            <section class="profile-header">
+                <form id="profile-pic-form">
+                    <label for="profile-pic-input">
+                        <img src="assets/images/profile_pic.jpg" alt="Profile Picture" class="profile-img" id="profile-pic">
+                    </label>
+                </form>
+                <div class="profile-info">
+                    <h2><%= username %></h2>
+                    <div class="stats">
+                        <span id="followers">Followers</span>
+                        <span id="following">Following</span>
                     </div>
+                </div>
+                <a href="logout" class="logout">
+                    <button>Logout</button>
+                </a>
+                <a href="home?p=profile&a=1" class="tambah-produk-link">
+                    <button>Tambah Produk</button>
+                </a>
+            </section>
+            <section class="profile">
+                <br>
+                <div class="store-title" style="margin-bottom: 40px;">Toko Saya</div>
+                <% 
+                    List<Product> products = (List<Product>) request.getAttribute("soldProducts");
+                    if (products != null && !products.isEmpty()) {
+                %>
+                    <div class="products" id="productsContainer">
+                        <% for (Product product : products) { %>
+                            <div class="product-item" data-name="<%= product.getName() %>" >
+                                <img src="<%= product.getImageURL() %>" alt="<%= product.getName() %>" class="product-image">
+                                <div class="product-details">
+                                    <h3><%= product.getName() %></h3>
+                                    <p><%= product.getDeskripsi() %></p>
+                                    <p>Harga: Rp <%= product.getHarga() %></p>
+                                    <p>Stok: <%= product.getKuantitas() %></p>
+                                    <div class="product-actions">
+                                        <form action="home" method="get" style="display: inline;">
+                                            <input type="hidden" name="p" value="profile">
+                                            <input type="hidden" name="a" value="0">
+                                            <input type="hidden" name="id" value="<%= product.getIDProduk() %>">
+                                            <button type="submit" class="btn btn-edit">Edit</button>
+                                        </form>
+                                        <form action="home?p=profile&a=-1" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                                            <input type="hidden" name="id" value="<%= product.getIDProduk() %>">
+                                            <button type="submit" class="btn btn-delete">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                <% 
+                    } else { 
+                %>
+                <div class="empty-store">
+                    <p>Wah, toko Anda benar-benar minimalis, ya?</p>
+                    <p>Kosong banget!</p>
+                </div>
                 <% } %>
+            </section>
+        </main>
+        <footer>
+            <div class="footer-info">
+                <p>Copyright © 2024 MyReuseHub</p>
             </div>
-        <% 
-            } else { 
-        %>
-            <p>Toko mu masih sepi, unggah penjualan mu sekarang!</p>
-        <% } %>
-        <a href="home?p=profile&a=1" class="btn btn-primary">Add Barang</a>
-    </div>
-    </section>
-  </main>
-</body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        </footer>
+
+        <script>
+            var followers = Math.floor(Math.random() * 10000) + 1; // Between 1 and 1000
+            var following = Math.floor(Math.random() * 5000) + 1; 
+            function addOne() {
+                followers += 1;
+                document.getElementById("followers").textContent = followers + " Followers";
+                document.getElementById("following").textContent =  following + " Following";
+            }
+            addOne();
+
+            // Optional: Refresh stats every 5 seconds (example)
+            setInterval(addOne, 5000);
+            
+            
+            // Fungsi untuk membuka pop-up
+            function openPopup(image, title, price) {
+                document.getElementById('popup-image').src = image;
+                document.getElementById('popup-title').innerText = title;
+                document.getElementById('popup-price').innerText = price;
+                document.getElementById('popup').style.display = 'flex';
+            }
+
+            // Fungsi untuk menutup pop-up
+            function closePopup() {
+                document.getElementById('popup').style.display = 'none';
+            }
+
+            // Fungsi untuk redirect ke halaman product_info.html
+            function redirectToProduct() {
+                window.location.href = 'product_info.html';
+            }
+
+            document.getElementById('search-bar').addEventListener('input', function (event) {
+                const searchTerm = event.target.value.toLowerCase(); // Get the input value in lowercase
+                const products = document.querySelectorAll('#productsContainer .product-item'); // Select all product items
+
+                products.forEach(product => {
+                    const productName = product.getAttribute('data-name').toLowerCase(); // Get the product name in lowercase
+                    if (productName.includes(searchTerm)) {
+                        product.style.display = ''; // Show the product if it matches the search term
+                    } else {
+                        product.style.display = 'none'; // Hide the product if it doesn't match
+                    }
+                });
+            });
+        </script>
+    </body>
 </html>

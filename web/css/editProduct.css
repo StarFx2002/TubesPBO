@@ -9,6 +9,11 @@ body {
     min-height: 100%;
 }
 
+/*.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}*/
 
 .product-form-container {
     padding-bottom: 50px;
@@ -122,3 +127,4 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+

@@ -8,7 +8,7 @@ import models.Users.Seller;
 import utilities.JDBC;
 
 
-public class ProductDB {
+public class ProductDB_unused {
 
     // Insert a new product into the database
     public void addProduct(Product product) {

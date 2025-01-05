@@ -1,10 +1,14 @@
 package models.Products;
 
 import models.Users.Seller;
+import utilities.JDBC;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
-public class Product extends ProductDB{
+public class Product {
     private int IDProduk;
     private String name;
     private String deskripsi;
@@ -25,16 +29,53 @@ public class Product extends ProductDB{
         this.pemilikProduk = pemilikProduk;
     }
     
-    public void tambahProduk() {
-        addProduct(this);
+    public List<Product> getAllProducts() {
+        List<Product> products = new ArrayList<>();
+        String query = "SELECT * FROM products";
+        JDBC jdbc = new JDBC("myreusehub");
+        try (Connection conn = jdbc.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                Seller seller = new Seller();
+                seller.setUserId(rs.getInt("seller_id"));
+                Product product = new Product(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getString("image_url"),
+                        rs.getDouble("price"),
+                        rs.getInt("quantity"),
+                        seller
+                );
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
     }
     
-    public void editProduk() {
-        editProduct(this);
-    }
-    
-    public void hapusProduk() {
-        deleteProduct(IDProduk);
+    public void loadProduct() {
+        String query = "SELECT * FROM products WHERE id = ?";
+        JDBC jdbc = new JDBC("myreusehub");
+        try (Connection conn = jdbc.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, this.getIDProduk());
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Seller seller = new Seller();
+                    seller.setUserId(rs.getInt("seller_id"));
+                    this.setName(rs.getString("name"));
+                    this.setDeskripsi(rs.getString("description"));
+                    this.setImageURL(rs.getString("image_url"));
+                    this.setHarga(rs.getDouble("price"));
+                    this.setKuantitas(rs.getInt("quantity"));
+                    this.setPemilikProduk(seller);
+                } else {
+                    System.out.println("No product found!");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getIDProduk() {

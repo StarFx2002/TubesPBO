@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+.register-form {
+    position: relative;
+}
+
+.register-form .icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: #ccc;
+}
+
+h1, h3 {
+    color: #333;
+    text-align: left;
+}
+.register-form input {
+    padding-left: 35px; /* Adjust padding to make space for the icon */
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(190deg, #F5EEAD, #FCFCF7);
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 1000px;
+    width: 90%;
+    gap: 20px;
+}
+
+.register-section {
+    width: 50%;
+}
+
+.register-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.register-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #FFD700; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.register-button:hover {
+    background-color: #3cb371;
+}
+
+p {
+    font-size: 14px;
+    color: #555;
+}
+
+p a {
+    text-decoration: none;
+}
+
+.image-section {
+    position: relative;
+    width: 50%;
+    max-width: 500px; /* Ensure it does not exceed this width */
+    margin: auto; /* Center the image section */
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slides img {
+    width: 100%;
+    height: auto;
+}
+
+.navigation {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    top: 50%;
+    transform: translateY(-50%);
+}
+    
+
+.navigation i {
+    cursor: pointer;
+    font-size: 2rem;
+    color: white;
+}

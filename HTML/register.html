@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="register.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="container">
+        <div class="register-section">
+            <form class="register-form" action="homepage.html" method="get">
+                <h1><b>Hello Shoppers</b></h1>
+                <h3><b>Welcome to MyReuseHub</b></h3>
+                <div class="textbox">
+                    <input type="text" name="username" placeholder="Email or Username" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="textbox">
+                    <input type="text" name="phone" placeholder="Phone Number" required>
+                    <i class='bx bxs-phone'></i>
+                </div>
+                <div class="textbox">
+                    <input type="text" name="address" placeholder="Address" required>
+                    <i class='bx bxs-map'></i>
+                </div>
+                <div class="textbox">
+                    <input type="password" name="password" placeholder="Password" required>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+                <input type="submit" class="register-button" value="Sign Up">
+            </form>
+            <p>Already have an account? <a href="login.html">Login</a></p>
+        </div>
+        <div class="image-section">
+            <div class="slides">
+                <img src="1.png" alt="Second Hand Items 1">
+                <img src="2.png" alt="Second Hand Items 2">
+                <img src="3.png" alt="Second Hand Items 3">
+            </div>
+            <div class="navigation">
+                <i class='bx bx-chevron-left' onclick="prevSlide()"></i>
+                <i class='bx bx-chevron-right' onclick="nextSlide()"></i>
+            </div>
+        </div>
+    </div>
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelector('.slides');
+        const totalSlides = slides.children.length;
+
+        function showSlide(index) {
+            if (index >= totalSlides) {
+                currentSlide = 0;
+            } else if (index < 0) {
+                currentSlide = totalSlides - 1;
+            } else {
+                currentSlide = index;
+            }
+            slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        setInterval(nextSlide, 2000); // Change slide every 2 seconds
+    </script>
+</body>
+</html>
+<style>
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .register-section, .image-section {
+        flex: 1;
+        min-width: 300px;
+        box-sizing: border-box;
+    }
+
+    .register-section {
+        padding: 20px;
+    }
+
+    .image-section {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .slides {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+    }
+
+    .slides img {
+        width: 100%;
+        flex-shrink: 0;
+    }
+
+    .navigation {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-50%);
+    }
+
+    .textbox i {
+        display: none;
+    }
+</style>

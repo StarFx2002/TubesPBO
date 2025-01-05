@@ -20,8 +20,9 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
-import models.Products.ProductDB;
 import models.Products.Product;
+import models.Transactions.Transaction;
+import models.Users.Buyer;
 import models.Users.Seller;
 
 /**
@@ -70,9 +71,30 @@ public class homeController extends HttpServlet {
         
         String menu = request.getParameter("p");
         String addR = request.getParameter("a");
+        String buyR = request.getParameter("b");
+        
+        if (buyR != null) {
+            int buy = Integer.parseInt(buyR);
+            if (buy == 1) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                Product buyProduct = new Product();
+                buyProduct.setIDProduk(id);
+                buyProduct.loadProduct();
+
+                request.setAttribute("product", buyProduct);
+                request.getRequestDispatcher("buyProduct.jsp").forward(request, response);
+                return;
+            }
+        }
+        
         
         if (menu != null) {
             if (menu.equals("payment")) {
+                int buyerId = (int) homeSession.getAttribute("id");
+                Buyer buyer = new Buyer();
+                buyer.setUserId(buyerId);
+                List<Transaction> transactions = buyer.listPembelian();
+                request.setAttribute("transactions", transactions);
                 request.getRequestDispatcher("payment.jsp").forward(request, response);
                 return;
             }
@@ -83,15 +105,21 @@ public class homeController extends HttpServlet {
                         int id = Integer.parseInt(request.getParameter("id"));
                         Product editProduct = new Product();
                         editProduct.setIDProduk(id);
-                        editProduct.loadProduct(editProduct);
+                        editProduct.loadProduct();
                         
-                        request.setAttribute("id", id);
-                        request.setAttribute("name", editProduct.getName());
-                        request.setAttribute("price", editProduct.getHarga());
-                        request.setAttribute("quantity", editProduct.getKuantitas());
-                        request.setAttribute("description", editProduct.getDeskripsi());
-                        request.setAttribute("imageUrl", editProduct.getImageURL());
-                        request.getRequestDispatcher("editProduct.jsp").forward(request, response);
+                        int sellerId = (int) homeSession.getAttribute("id");
+                        if (editProduct.getPemilikProduk().getUserId() == sellerId) {
+                            request.setAttribute("id", id);
+                            request.setAttribute("name", editProduct.getName());
+                            request.setAttribute("price", editProduct.getHarga());
+                            request.setAttribute("quantity", editProduct.getKuantitas());
+                            request.setAttribute("description", editProduct.getDeskripsi());
+                            request.setAttribute("imageUrl", editProduct.getImageURL());
+                            request.getRequestDispatcher("editProduct.jsp").forward(request, response);
+                        } else {
+                            // Handle unauthorized access (e.g., redirect to error page)
+                            response.sendRedirect("error.jsp?message=Unauthorized access");
+                        }
                         return;
                     }
                     if (add == 1) {
@@ -99,16 +127,17 @@ public class homeController extends HttpServlet {
                         return;
                     }
                 }
-                
                 int sellerId = (int) homeSession.getAttribute("id");
-                List<Product> soldProducts = new Product().getProductsBySeller(sellerId);
+                Seller seller = new Seller();
+                seller.setUserId(sellerId);
+                List<Product> soldProducts = seller.listProduk();
                 request.setAttribute("soldProducts", soldProducts);
                 request.getRequestDispatcher("profile.jsp").forward(request, response);
                 return;
             }
         }
         
-        ProductDB prod = new ProductDB();
+        Product prod = new Product();
         List<Product> products = prod.getAllProducts();
         request.setAttribute("products", products);
         request.getRequestDispatcher("home.jsp").forward(request, response);
@@ -133,6 +162,28 @@ public class homeController extends HttpServlet {
         
         String menu = request.getParameter("p");
         String addR = request.getParameter("a");
+        String buyR = request.getParameter("b");
+        
+        if (buyR != null) {
+            int buy = Integer.parseInt(buyR);
+            if (buy == 1) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                String payment = request.getParameter("paymentMethod");
+                int quantity = Integer.parseInt(request.getParameter("quantity"));
+                
+                int userId = (int) homeSession.getAttribute("id");
+                Buyer buyer = new Buyer();
+                buyer.setUserId(userId);
+                
+                Product buyProduct = new Product();
+                buyProduct.setIDProduk(id);
+                buyProduct.loadProduct();
+
+                buyer.beliProduk(buyProduct, quantity, payment);
+                response.sendRedirect("home?p=payment");
+                return;
+            }
+        }
         
         if (menu != null) {
             if (menu.equals("profile")) {
@@ -140,9 +191,13 @@ public class homeController extends HttpServlet {
                     int add = Integer.parseInt(addR);
                     if (add == -1) {
                         int id = Integer.parseInt(request.getParameter("id"));
+                        int sellerId = (int) homeSession.getAttribute("id");
+                        Seller seller = new Seller();
+                        seller.setUserId(sellerId);
                         Product delProduct = new Product();
                         delProduct.setIDProduk(id);
-                        delProduct.hapusProduk();
+                        seller.hapusProduk(delProduct);
+                        
                     }
                     if (add == 0) {
                         int id = (int) homeSession.getAttribute("id");
@@ -189,7 +244,7 @@ public class homeController extends HttpServlet {
                         // Create a Product object and update it
                         Product product = new Product();
                         product.setIDProduk(productId); // Set the product ID
-                        product.loadProduct(product);
+                        product.loadProduct();
                         
                         product.setName(name);
                         product.setHarga(price);
@@ -199,7 +254,7 @@ public class homeController extends HttpServlet {
                             product.setImageURL(imageUrl); // Update image URL only if a new image is uploaded
                         } 
                         product.setPemilikProduk(seller);
-                        product.editProduk();
+                        seller.editProduk(product);
                     }
                     if (add == 1) {
                         int id = (int) homeSession.getAttribute("id");
@@ -243,7 +298,7 @@ public class homeController extends HttpServlet {
                         product.setDeskripsi(description);
                         product.setImageURL("assets/uploads/" + uniqueFileName);
                         product.setPemilikProduk(seller);
-                        product.tambahProduk();
+                        seller.tambahProduk(product);
                     }
                 }
                 

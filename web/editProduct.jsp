@@ -5,24 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Product - MyReuseHub</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/addProduct.css">
+    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="css/editProduct.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <h1>MyReuseHub</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="home">MyHome</a></li>
-                    <li><a href="home?p=payment">MyPayment</a></li>
-                    <li><a href="home?p=profile" class="active">MyProfile</a></li>
-                </ul>
-            </nav>
-        </header>
-        <main>
+    <div class="main-container">
+        <%@ include file="components/header.jsp" %>
+        <main class="product-form-container">
             <h1>Edit Product</h1>
             <form class="add-product-form" action="home?p=profile&a=0" method="post" enctype="multipart/form-data">
                 <div class="photo-upload">
@@ -39,6 +28,7 @@
                     <% if (request.getParameter("error") != null && request.getParameter("error").equals("invalid_file_type")) { %>
                         <p class="error">Please upload a valid image file (JPG, PNG, WEBP, or GIF).</p>
                     <% } %>
+                    <p style="color: gray">*jpg, png, webp or gif</p>
                 </div>
                 <div class="form-fields">
                     <input type="hidden" name="id" value="<%= request.getAttribute("id") %>">
@@ -98,5 +88,5 @@
         }
     }
 </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>-->
 </html>
