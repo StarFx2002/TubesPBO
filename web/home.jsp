@@ -1,3 +1,4 @@
+<%@page import="models.Transactions.Transaction"%>
 <%@page import="models.Users.Seller"%>
 <%@page import="java.util.List"%>
 <%@page import="models.Products.Product"%>
@@ -25,19 +26,54 @@
                     <% 
                         // Retrieve the 'products' attribute from the request
                         List<Product> products = (List<Product>) request.getAttribute("products");
-                        if (products.size() > 0) {
+                        List<Transaction> transactions = (List<Transaction>) request.getAttribute("transactions"); // All transactions
+
+                        if (products != null && products.size() > 0) {
                             for (Product product : products) {
                                 if (product.getKuantitas() < 1) continue;
+                                if (product.getDeleted()) continue;
                                 Seller seller = product.getPemilikProduk();
                                 seller.loadUser();
-                                String sellerName = seller.getUsername();
+
+                                // Calculate the average rating for the product
+                                double totalRating = 0;
+                                int count = 0;
+                                for (Transaction transaction : transactions) {
+                                    if (transaction.getProduk().getIDProduk() == product.getIDProduk()) {
+                                        if (transaction.getRating() > -1) { // Only consider valid ratings
+                                            totalRating += transaction.getRating();
+                                            count++;
+                                        }
+                                    }
+                                }
+
+                                double avgRating = (count > 0) ? totalRating / count : -1; // Calculate average rating
+                                int fullStars = (int) avgRating;
+                                int emptyStars = 5 - fullStars;
                     %>
-                                <div class="product-item" data-name="<%= product.getName() %>"  onclick="openPopup('<%= product.getIDProduk() %>', <%= product.getPemilikProduk().getUserId() %>, '<%= product.getImageURL() %>', '<%= product.getName() %>', 'Rp <%= product.getHarga()%>')">
+                                <div class="product-item" data-name="<%= product.getName() %>" onclick="openPopup('<%= product.getIDProduk() %>', <%= product.getPemilikProduk().getUserId() %>, '<%= product.getImageURL() %>', '<%= product.getName() %>', 'Rp <%= product.getHarga()%>')">
                                     <img src="<%= product.getImageURL() %>" alt="Product Image">
                                     <h3><%= product.getName() %></h3>
                                     <p>Yang jualan : <%= product.getPemilikProduk().getUsername() %></p>
-                                    <p>Rp. <%= product.getHarga()%></p>
-                                    <p>&#x2B50 &#x2B50 &#x2B50 &#x2B50 &#x2B50</p>
+                                    <p>Rp. <%= product.getHarga() %></p>
+
+                                    <!-- Display average rating as stars -->
+                                    <p>Rating: 
+                                        <% 
+                                            if (avgRating > -1) {
+                                                // Display full stars
+                                                for (int i = 0; i < fullStars; i++) {
+                                                    out.print("&#x2B50;"); // Full Star
+                                                }
+                                                // Display empty stars
+                                                for (int i = 0; i < emptyStars; i++) {
+                                                    out.print("&#9734;"); // Empty Star
+                                                }
+                                            } else {
+                                                out.print("No ratings yet");
+                                            }
+                                        %>
+                                    </p>
                                 </div>
                     <% 
                             }

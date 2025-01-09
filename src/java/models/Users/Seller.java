@@ -37,6 +37,7 @@ public class Seller extends User{
                             rs.getInt("quantity"),
                             seller
                     );
+                    product.setDeleted(rs.getBoolean("deleted"));
                     // Add product to the list
                     listProduk.add(product);
                 }
@@ -90,12 +91,12 @@ public class Seller extends User{
     }
     
     public void hapusProduk(Product produk) {
-        String query = "DELETE FROM products WHERE id = ?";
+        String query = "UPDATE products SET deleted = true WHERE id = ?";
         JDBC jdbc = new JDBC("myreusehub");
         try (Connection conn = jdbc.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, produk.getIDProduk());
             int rowsAffected = stmt.executeUpdate();
-//            return rowsAffected > 0; // Return true if a product was deleted
+            // return rowsAffected > 0; // Uncomment if you want to return a boolean
         } catch (SQLException e) {
             e.printStackTrace();
         }

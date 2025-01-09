@@ -73,7 +73,7 @@ public class registerController extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         } else {
-            request.setAttribute("failedRgesiter", "User with the same detail exsited!");
+            request.setAttribute("failedRgesiter", "User with the same email or username existed!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }

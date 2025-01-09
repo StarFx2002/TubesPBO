@@ -88,7 +88,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `name`, `password`, `phone_number`, `address`) VALUES
-(2, 'aktsar@gmail.com', 'aktsar', '801fd3d2ab3eadcfbf7e765a6ed5bbc69a28bcfbbad9e4b362b822f69d12e56f', '082165255879', 'Mars Selatan IX no 27'),
+(2, 'my@gmail.com', 'aktsar', '801fd3d2ab3eadcfbf7e765a6ed5bbc69a28bcfbbad9e4b362b822f69d12e56f', '088888', 'Mars'),
 (3, '123', '123', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', '123', '123');
 
 --

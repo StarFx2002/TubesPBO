@@ -16,6 +16,7 @@ public class Product {
     private double harga;
     private int kuantitas;
     private Seller pemilikProduk;
+    private boolean deleted;
     
     public Product() {}
 
@@ -46,6 +47,7 @@ public class Product {
                         rs.getInt("quantity"),
                         seller
                 );
+                product.setDeleted(rs.getBoolean("deleted"));
                 products.add(product);
             }
         } catch (SQLException e) {
@@ -69,6 +71,7 @@ public class Product {
                     this.setHarga(rs.getDouble("price"));
                     this.setKuantitas(rs.getInt("quantity"));
                     this.setPemilikProduk(seller);
+                    this.setDeleted(rs.getBoolean("deleted"));
                 } else {
                     System.out.println("No product found!");
                 }
@@ -133,6 +136,15 @@ public class Product {
     public void setPemilikProduk(Seller pemilikProduk) {
         this.pemilikProduk = pemilikProduk;
     }
+
+    public boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+    
     
 }
 

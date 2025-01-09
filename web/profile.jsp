@@ -43,7 +43,9 @@
                     if (products != null && !products.isEmpty()) {
                 %>
                     <div class="products" id="productsContainer">
-                        <% for (Product product : products) { %>
+                        <% for (Product product : products) { 
+                            if (product.getDeleted()) continue;
+                        %>
                             <div class="product-item" data-name="<%= product.getName() %>" >
                                 <img src="<%= product.getImageURL() %>" alt="<%= product.getName() %>" class="product-image">
                                 <div class="product-details">

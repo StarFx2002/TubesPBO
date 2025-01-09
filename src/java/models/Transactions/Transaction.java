@@ -8,6 +8,8 @@ import models.Products.Product;
 import models.Users.Buyer;
 import utilities.JDBC;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Transaction {
@@ -32,6 +34,35 @@ public class Transaction {
         this.metodePembayaran = metodePembayaran;
         this.alamat = alamat;
         this.rating = rating;
+    }
+    
+    public List<Transaction> getAllTransactions() {
+        List<Transaction> transactions = new ArrayList<>();
+        String query = "SELECT * FROM transactions";
+        JDBC jdbc = new JDBC("myreusehub");
+        try (Connection conn = jdbc.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                Buyer buyer = new Buyer();
+                buyer.setUserId(rs.getInt("buyer_id"));
+                buyer.loadUser();
+                Product produk = new Product();
+                produk.setIDProduk(rs.getInt("product_id"));
+                produk.loadProduct();
+                
+                Transaction trans = new Transaction();
+                trans.setIDTransaksi(rs.getInt("id"));
+                trans.setProduk(produk);
+                trans.setPembeli(buyer);
+                trans.setKuantitas(rs.getInt("quantity"));
+                trans.setMetodePembayaran(rs.getString("payment_method"));
+                trans.setAlamat(rs.getString("address"));
+                trans.setRating(rs.getFloat("rating"));
+                transactions.add(trans);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return transactions;
     }
     
     public boolean simpanTransaksi() {

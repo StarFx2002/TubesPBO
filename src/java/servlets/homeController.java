@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -24,6 +25,8 @@ import models.Products.Product;
 import models.Transactions.Transaction;
 import models.Users.Buyer;
 import models.Users.Seller;
+import utilities.JDBC;
+import java.sql.*;
 
 /**
  *
@@ -138,8 +141,11 @@ public class homeController extends HttpServlet {
         }
         
         Product prod = new Product();
+        Transaction trans = new Transaction();
         List<Product> products = prod.getAllProducts();
+        List<Transaction> transactions = trans.getAllTransactions();
         request.setAttribute("products", products);
+        request.setAttribute("transactions", transactions);
         request.getRequestDispatcher("home.jsp").forward(request, response);
     }
 
@@ -303,6 +309,45 @@ public class homeController extends HttpServlet {
                 }
                 
                 response.sendRedirect("home?p=profile");
+            }
+            if (menu.equals("payment")) {
+                StringBuilder sb = new StringBuilder();
+                String line;
+
+                try (BufferedReader reader = request.getReader()) {
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line);
+                    }
+                }
+
+                String requestBody = sb.toString();
+
+                // Manually parse the JSON string
+                String transactionId = null;
+                int rating = 0;
+
+                if (requestBody.contains("\"transactionId\":") && requestBody.contains("\"rating\":")) {
+                    transactionId = requestBody.split("\"transactionId\":\"")[1].split("\"")[0];
+                    String ratingString = requestBody.split("\"rating\":")[1].split("}")[0].trim();
+                    rating = Integer.parseInt(ratingString.replaceAll("\"", "")); // Remove extra quotes, if any
+                }
+                
+                String query = "UPDATE transactions SET rating = ? WHERE id = ?";
+                JDBC jdbc = new JDBC("myreusehub");
+                boolean success = false;
+
+                try (Connection conn = jdbc.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+                    stmt.setFloat(1, rating);
+                    stmt.setString(2, transactionId);
+                    int rowsAffected = stmt.executeUpdate();
+                    success = rowsAffected > 0;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write("{\"success\":" + success + "}");
             }
         }
     }

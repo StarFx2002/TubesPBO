@@ -6,7 +6,7 @@ import utilities.JDBC;
 import utilities.PasswordHash;
 
 
-public class User extends UserDB{
+public class User {
     private int userId;
     protected String email;
     protected String username;
@@ -31,7 +31,39 @@ public class User extends UserDB{
     }
     
     public boolean masukAkun() {
-        return authorizeUser(username, password, this);
+        String query = "SELECT id FROM users WHERE name = ? OR email = ?";
+        JDBC jdbc = new JDBC("myreusehub");
+        int exists = -1;
+        try (Connection conn = jdbc.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, username);
+            stmt.setString(2, email);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) exists = rs.getInt("id"); // If a record exists, return true
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        //If user not found
+        if (exists < 0) {
+            return false;
+        }
+        
+        query = "SELECT password FROM users WHERE id = ?";
+        jdbc = new JDBC("myreusehub");
+        try (Connection conn = jdbc.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, exists);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    this.setUserId(exists);
+                    String storedPasswordHash = rs.getString("password");
+                    return storedPasswordHash.equals(PasswordHash.hashPassword(password)); // Compare hashes
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
     
     public boolean daftarAkun() {
@@ -48,6 +80,7 @@ public class User extends UserDB{
             e.printStackTrace();
         }
         
+        //If user already exists
         if (exists > -1) {
             return false;
         }
@@ -68,7 +101,16 @@ public class User extends UserDB{
     }
     
     public boolean hapusAkun() {
-        return deleteUser(userId);
+        String query = "DELETE FROM users WHERE id = ?";
+        JDBC jdbc = new JDBC("myreusehub");
+        try (Connection conn = jdbc.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, this.userId);
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0; // Return true if a user was deleted
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
     
     public void loadUser() {

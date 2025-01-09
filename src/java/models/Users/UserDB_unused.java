@@ -5,7 +5,7 @@ import utilities.JDBC;
 import utilities.PasswordHash;
 
 
-public class UserDB {
+public class UserDB_unused {
     private int isUserExists(String username, String email) {
         String query = "SELECT id FROM users WHERE name = ? OR email = ?";
         JDBC jdbc = new JDBC("myreusehub");
